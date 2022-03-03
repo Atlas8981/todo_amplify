@@ -38,6 +38,16 @@ dependencies:
   amplify_api: ^0.4.0
   amplify_datastore: ^0.4.0
   amplify_datastore_plugin_interface: ^0.4.0
+  get: ^4.3.8
+  image_picker: ^0.8.3+2
+  fluttertoast: ^8.0.8
+  dots_indicator: ^2.0.0
+  cached_network_image: 3.2.0
+  photo_view: ^0.13.0
+  sms_autofill: ^2.2.0
+  flutter_svg: ^1.0.0
+  open_file: ^3.2.1
+  file_picker: ^4.2.7
 
 dev_dependencies:
   flutter_test:
@@ -59,7 +69,18 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
+  fonts:
+    - family: KhmerOSBattambong
+      fonts:
+        - asset: assets/fonts/khmeros_battambong.ttf
+    - family: KhmerOSMuol
+      fonts:
+        - asset: assets/fonts/KhmerOS_muol.ttf
   uses-material-design: true
+    # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/
+    - assets/images/mptc_logo_l.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
