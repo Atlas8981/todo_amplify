@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^1.0.0
   open_file: ^3.2.1
   file_picker: ^4.2.7
+  animations: ^2.0.2
+  animated_check: ^1.0.5
 
 dev_dependencies:
   flutter_test:
