@@ -38,27 +38,11 @@ class TaskListController extends GetxController {
         .toList();
     for (String e in lists) {
       listOfTabs.add(
-        Tab(text: e),
+        Tab(
+          text: e,
+        ),
       );
     }
-    listOfTabs.add(
-      InkWell(
-        onTap: () {
-          Get.to(
-            () => AddTypeOfTaskPage(),
-            fullscreenDialog: true,
-          );
-        },
-        child: Tab(
-          child: Row(
-            children: [
-              Icon(Icons.add),
-              Text("Add New List"),
-            ],
-          ),
-        ),
-      ),
-    );
     return listOfTabs;
   }
 

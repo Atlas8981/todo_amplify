@@ -15,21 +15,21 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final taskListController = Get.find<TaskListController>();
 
-  late String selectedList = taskListController.taskList[0].name ?? "";
+  late TypeOfTask selectedTypeOfTask = taskListController.taskList[0];
 
   Widget customDropDownButton() {
     return Padding(
       padding: EdgeInsets.all(8),
-      child: DropdownButton<String>(
+      child: DropdownButton<TypeOfTask>(
         dropdownColor: Colors.grey.shade800,
         underline: Container(),
         isDense: true,
         iconEnabledColor: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        value: selectedList,
+        value: selectedTypeOfTask,
         items: taskListController.taskList.map((TypeOfTask value) {
-          return DropdownMenuItem<String>(
-            value: value.name,
+          return DropdownMenuItem<TypeOfTask>(
+            value: value,
             child: Text(
               value.name ?? "",
               style: TextStyle(
@@ -44,7 +44,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             return;
           }
           setState(() {
-            selectedList = value;
+            selectedTypeOfTask = value;
             print(value);
           });
         },
@@ -57,6 +57,37 @@ class _AddTaskPageState extends State<AddTaskPage> {
       detailCon = TextEditingController(),
       dateTimeCon = TextEditingController();
 
+  Future<bool> addTodo(Task task) async {
+    try {
+      await Amplify.DataStore.save(task);
+      return true;
+    } catch (e) {
+      print('An error occurred while saving Todo: $e');
+    }
+    return false;
+  }
+
+  Future<void> saveTask() async {
+    if (!addForm.currentState!.validate()) {
+      showToast("FieldEmpty");
+      return;
+    }
+    final name = taskNameCon.text;
+    final description = detailCon.text;
+    final task = Task(
+      name: name,
+      description: description,
+      typeoftaskID: selectedTypeOfTask.getId(),
+    );
+    final okay = await addTodo(task);
+    if (okay) {
+      showToast("Success");
+      Get.back();
+    } else {
+      showToast("Failed");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,19 +96,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              if (!addForm.currentState!.validate()) {
-                showToast("FieldEmpty");
-                return;
-              }
-              final name = taskNameCon.text;
-              final description = detailCon.text;
-              final okay = await addTodo(name, description);
-              if (okay) {
-                showToast("Success");
-                Get.back();
-              } else {
-                showToast("Failed");
-              }
+              saveTask();
             },
             icon: Icon(Icons.check),
           ),
@@ -135,21 +154,5 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
       ),
     );
-  }
-
-  Future<bool> addTodo(String name, String description) async {
-    final task = Task(
-      name: name,
-      description: description,
-      typeoftaskID: '',
-    );
-
-    try {
-      await Amplify.DataStore.save(task);
-      return true;
-    } catch (e) {
-      print('An error occurred while saving Todo: $e');
-    }
-    return false;
   }
 }

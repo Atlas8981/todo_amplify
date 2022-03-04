@@ -5,13 +5,15 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:todo_amplify/components/custom_tab_bar_indicator.dart';
 import 'package:todo_amplify/controllers/task_list_controller.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
-import 'package:todo_amplify/utils/constant.dart';
 import 'package:todo_amplify/views/add_task_page.dart';
 
 import '../amplifyconfiguration.dart';
+import 'add_type_of_task_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -31,13 +33,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   final taskListController = Get.put(TaskListController());
 
-  List<Task> tasks = [];
-  List<TypeOfTask> typeOfTasks = [];
-
   List<Widget> appBarActions() {
     return [
       IconButton(
-        onPressed: () {},
+        onPressed: () async {
+          // final List<Task> tasks = await Amplify.DataStore.query(Task.classType,
+          //     where: Task.TYPEOFTASKID.eq(typeOfTasks[0].id));
+          // print(tasks);
+          // print(typeOfTasks[0]);
+        },
         icon: Icon(CupertinoIcons.gear),
       )
     ];
@@ -88,11 +92,44 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             backgroundColor: Colors.grey.shade800,
             child: FlutterLogo(),
           ),
-          bottom: TabBar(
-            controller: tabController,
-            tabs: tabs,
-            isScrollable: true,
-            indicatorWeight: 3,
+          bottom: PreferredSize(
+            preferredSize: Size(
+              double.maxFinite,
+              kToolbarHeight,
+            ),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  TabBar(
+                    controller: tabController,
+                    tabs: tabs,
+                    isScrollable: true,
+                    indicatorWeight: 3,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicator: CustomUnderlineBarIndicator(
+                      color: Colors.blue,
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(
+                        () => AddTypeOfTaskPage(),
+                        fullscreenDialog: true,
+                      );
+                    },
+                    child: Tab(
+                      child: Row(
+                        children: [
+                          Icon(Icons.add),
+                          Text("Add New List"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -114,61 +151,95 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         builder: (controller) {
           final tabs = taskListController.getTabs();
           final tabController = taskListController.getTabController(this);
-          return NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
-              return <Widget>[
-                customAppBar(
-                  context,
-                  innerBoxIsScrolled,
-                  tabs,
-                  tabController,
-                ),
-              ];
-            },
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  ListView.builder(
-                    padding: EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 100,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text(
-                        "Something $index",
-                      ),
-                      onTap: () {},
-                    ),
+          final typeOfTask = taskListController.taskList;
+          return DefaultTabController(
+            length: typeOfTask.length,
+            child: NestedScrollView(
+              floatHeaderSlivers: true,
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return <Widget>[
+                  customAppBar(
+                    context,
+                    innerBoxIsScrolled,
+                    tabs,
+                    tabController,
                   ),
-                  Divider(
-                    thickness: 3,
-                  ),
-                  ExpansionTile(
-                    title: Text("Complete (11)"),
-                    children: [
-                      ListView.builder(
-                        padding: EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 10,
-                        itemBuilder: (context, index) => ListTile(
-                          title: Text(
-                            "Something $index",
-                            style: TextStyle(
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                          onTap: () {},
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ];
+              },
+              body: TabBarView(
+                controller: tabController,
+                children: typeOfTask.map(
+                  (e) {
+                    return taskBodyView(e);
+                  },
+                ).toList(),
               ),
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget taskBodyView(TypeOfTask typeOfTask) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FutureBuilder<List<Task>?>(
+            future: Amplify.DataStore.query(
+              Task.classType,
+              where: Task.TYPEOFTASKID.eq(typeOfTask.id),
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              final tasks = snapshot.data;
+              if (tasks == null) {
+                return const Center(
+                  child: Text("No Task"),
+                );
+              }
+              return ListView.builder(
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: tasks.length,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(
+                    tasks[index].name ?? "",
+                  ),
+                  onTap: () {},
+                ),
+              );
+            },
+          ),
+          Divider(
+            thickness: 3,
+          ),
+          ExpansionTile(
+            title: Text("Complete (11)"),
+            children: [
+              ListView.builder(
+                padding: EdgeInsets.all(0),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 10,
+                itemBuilder: (context, index) => ListTile(
+                  title: Text(
+                    "Something $index",
+                    style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                    ),
+                  ),
+                  onTap: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -184,12 +255,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     _subscription = Amplify.DataStore.observeQuery(TypeOfTask.classType)
         .listen((QuerySnapshot<TypeOfTask> snapshot) {
-      typeOfTasks = snapshot.items;
-      taskListController.addNewLists(typeOfTasks, this);
-
-      // showToast(snapshot.items.map((e) => e.name).toString());
-      // tasks = snapshot.items;
-      // showToast(tasks.map((e) => e.name).toString());
+      taskListController.addNewLists(snapshot.items, this);
     });
   }
 
