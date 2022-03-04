@@ -23,13 +23,14 @@ import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Todo type in your schema. */
+/** This is an auto generated class representing the Task type in your schema. */
 @immutable
-class Todo extends Model {
-  static const classType = const _TodoModelType();
+class Task extends Model {
+  static const classType = const _TaskModelType();
   final String id;
   final String? _name;
   final String? _description;
+  final String? _typeoftaskID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -41,9 +42,17 @@ class Todo extends Model {
     return id;
   }
   
-  String get name {
+  String? get name {
+    return _name;
+  }
+  
+  String? get description {
+    return _description;
+  }
+  
+  String get typeoftaskID {
     try {
-      return _name!;
+      return _typeoftaskID!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -54,10 +63,6 @@ class Todo extends Model {
     }
   }
   
-  String? get description {
-    return _description;
-  }
-  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -66,13 +71,14 @@ class Todo extends Model {
     return _updatedAt;
   }
   
-  const Todo._internal({required this.id, required name, description, createdAt, updatedAt}): _name = name, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Task._internal({required this.id, name, description, required typeoftaskID, createdAt, updatedAt}): _name = name, _description = description, _typeoftaskID = typeoftaskID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Todo({String? id, required String name, String? description}) {
-    return Todo._internal(
+  factory Task({String? id, String? name, String? description, required String typeoftaskID}) {
+    return Task._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
-      description: description);
+      description: description,
+      typeoftaskID: typeoftaskID);
   }
   
   bool equals(Object other) {
@@ -82,10 +88,11 @@ class Todo extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Todo &&
+    return other is Task &&
       id == other.id &&
       _name == other._name &&
-      _description == other._description;
+      _description == other._description &&
+      _typeoftaskID == other._typeoftaskID;
   }
   
   @override
@@ -95,10 +102,11 @@ class Todo extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Todo {");
+    buffer.write("Task {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("description=" + "$_description" + ", ");
+    buffer.write("typeoftaskID=" + "$_typeoftaskID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -106,42 +114,62 @@ class Todo extends Model {
     return buffer.toString();
   }
   
-  Todo copyWith({String? id, String? name, String? description}) {
-    return Todo._internal(
+  Task copyWith({String? id, String? name, String? description, String? typeoftaskID}) {
+    return Task._internal(
       id: id ?? this.id,
       name: name ?? this.name,
-      description: description ?? this.description);
+      description: description ?? this.description,
+      typeoftaskID: typeoftaskID ?? this.typeoftaskID);
   }
   
-  Todo.fromJson(Map<String, dynamic> json)  
+  Task.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _description = json['description'],
+      _typeoftaskID = json['typeoftaskID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'description': _description, 'typeoftaskID': _typeoftaskID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
-  static final QueryField ID = QueryField(fieldName: "todo.id");
+  static final QueryField ID = QueryField(fieldName: "task.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField TYPEOFTASKID = QueryField(fieldName: "typeoftaskID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Todo";
-    modelSchemaDefinition.pluralName = "Todos";
+    modelSchemaDefinition.name = "Task";
+    modelSchemaDefinition.pluralName = "Tasks";
+    
+    modelSchemaDefinition.authRules = [
+      AuthRule(
+        authStrategy: AuthStrategy.PUBLIC,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
+    ];
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Todo.NAME,
-      isRequired: true,
+      key: Task.NAME,
+      isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Todo.DESCRIPTION,
+      key: Task.DESCRIPTION,
       isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Task.TYPEOFTASKID,
+      isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
@@ -161,11 +189,11 @@ class Todo extends Model {
   });
 }
 
-class _TodoModelType extends ModelType<Todo> {
-  const _TodoModelType();
+class _TaskModelType extends ModelType<Task> {
+  const _TaskModelType();
   
   @override
-  Todo fromJson(Map<String, dynamic> jsonData) {
-    return Todo.fromJson(jsonData);
+  Task fromJson(Map<String, dynamic> jsonData) {
+    return Task.fromJson(jsonData);
   }
 }

@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_amplify/models/ModelProvider.dart';
+import 'package:todo_amplify/views/add_type_of_task_page.dart';
 
 class TaskListController extends GetxController {
   TabController? tabController;
 
-  TaskListController();
-
   TickerProvider? tickerProvider;
 
-  final RxList<String> taskList = [
-    "Buy List",
-    "ជំនាញ",
-    "កម្រិតសញ្ញាបត្រ",
-    "ភេទ",
-    "Kaleng Os Luy",
-    "ឥស្សរិយយស្ស",
-  ].obs;
+  final List<TypeOfTask> taskList = [];
 
-  void addNewList(String newList, TickerProvider tickerProvider) {
-    taskList.add(newList);
+  void addNewLists(List<TypeOfTask> newLists, TickerProvider tickerProvider) {
+    taskList.clear();
+    taskList.addAll(newLists);
     tabController = TabController(
       length: getTabs().length,
       vsync: tickerProvider,
@@ -26,9 +20,22 @@ class TaskListController extends GetxController {
     update();
   }
 
+  void addNewList(TypeOfTask newList, TickerProvider? tickerProvider) {
+    taskList.add(newList);
+    tabController = TabController(
+      length: getTabs().length,
+      vsync: tickerProvider ?? this.tickerProvider!,
+    );
+    update();
+  }
+
   List<Widget> getTabs() {
     final List<Widget> listOfTabs = [];
-    final List<String> lists = taskList;
+    final List<String> lists = taskList
+        .map(
+          (element) => element.name ?? "",
+        )
+        .toList();
     for (String e in lists) {
       listOfTabs.add(
         Tab(text: e),
@@ -37,7 +44,10 @@ class TaskListController extends GetxController {
     listOfTabs.add(
       InkWell(
         onTap: () {
-          addNewList("newList", tickerProvider!);
+          Get.to(
+            () => AddTypeOfTaskPage(),
+            fullscreenDialog: true,
+          );
         },
         child: Tab(
           child: Row(

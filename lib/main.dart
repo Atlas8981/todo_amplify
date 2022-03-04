@@ -43,7 +43,9 @@ class MyApp extends StatelessWidget {
         ),
         textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Colors.white,
+              displayColor: Colors.white,
             ),
+        hintColor: Colors.white60,
         iconTheme: Theme.of(context).iconTheme.copyWith(
               color: Colors.white,
             ),
