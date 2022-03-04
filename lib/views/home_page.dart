@@ -11,6 +11,7 @@ import 'package:todo_amplify/components/custom_tab_bar_indicator.dart';
 import 'package:todo_amplify/controllers/task_list_controller.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
 import 'package:todo_amplify/views/add_task_page.dart';
+import 'package:todo_amplify/views/edit_task_page.dart';
 
 import '../amplifyconfiguration.dart';
 import 'add_type_of_task_page.dart';
@@ -211,7 +212,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   title: Text(
                     tasks[index].name ?? "",
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => EditTaskPage(task: tasks[index]));
+                  },
+                  onLongPress: () {},
                 ),
               );
             },

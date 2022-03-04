@@ -7,14 +7,19 @@ import 'package:todo_amplify/controllers/task_list_controller.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
 import 'package:todo_amplify/utils/constant.dart';
 
-class AddTaskPage extends StatefulWidget {
-  const AddTaskPage({Key? key}) : super(key: key);
+class EditTaskPage extends StatefulWidget {
+  const EditTaskPage({
+    Key? key,
+    required this.task,
+  }) : super(key: key);
+
+  final Task task;
 
   @override
-  State<AddTaskPage> createState() => _AddTaskPageState();
+  State<EditTaskPage> createState() => _EditTaskPageState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class _EditTaskPageState extends State<EditTaskPage> {
   final taskListController = Get.find<TaskListController>();
 
   late TypeOfTask selectedTypeOfTask = taskListController.taskList[0];
@@ -54,7 +59,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  final addForm = GlobalKey<FormState>();
+  final editForm = GlobalKey<FormState>();
   final taskNameCon = TextEditingController(),
       detailCon = TextEditingController(),
       dateTimeCon = TextEditingController();
@@ -70,7 +75,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   Future<void> saveTask() async {
-    if (!addForm.currentState!.validate()) {
+    if (!editForm.currentState!.validate()) {
       showToast("FieldEmpty");
       return;
     }
@@ -91,23 +96,28 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    taskNameCon.text = widget.task.name ?? "";
+    detailCon.text = widget.task.description ?? "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () async {
-              saveTask();
-            },
-            icon: Icon(Icons.check),
+            onPressed: () {},
+            icon: Icon(Icons.delete_outline_rounded),
           ),
         ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
-          key: addForm,
+          key: editForm,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -125,6 +135,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 controller: dateTimeCon,
                 hintText: "Add date/time",
                 prefixIcons: Icons.event_available,
+              ),
+              SubTextField(
+                controller: TextEditingController(),
+                hintText: "Add subtasks",
+                prefixIcons: Icons.subdirectory_arrow_right,
+                enableInteractiveSelection: false,
+                focusNode: AlwaysDisabledFocusNode(),
+                onTap: () {
+
+                },
               ),
             ],
           ),

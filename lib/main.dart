@@ -47,8 +47,8 @@ class MyApp extends StatelessWidget {
             ),
         hintColor: Colors.white60,
         iconTheme: Theme.of(context).iconTheme.copyWith(
-              color: Colors.white,
-            ),
+          color: Colors.white,
+        ),
         scaffoldBackgroundColor: Colors.grey.shade800,
       ),
       themeMode: ThemeMode.dark,
