@@ -34,14 +34,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   final taskListController = Get.put(TaskListController());
 
-  List<Widget> appBarActions() {
+  List<Widget> appBarActions(TabController tabController) {
     return [
       IconButton(
-        onPressed: () async {
-          // final List<Task> tasks = await Amplify.DataStore.query(Task.classType,
-          //     where: Task.TYPEOFTASKID.eq(typeOfTasks[0].id));
-          // print(tasks);
-          // print(typeOfTasks[0]);
+        onPressed: () {
+          tabController.animateTo(2);
         },
         icon: Icon(CupertinoIcons.gear),
       )
@@ -75,7 +72,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget customAppBar(context, innerBoxIsScrolled, tabs, tabController) {
+  Widget customAppBar(
+    BuildContext context,
+    bool innerBoxIsScrolled,
+    List<Widget> tabs,
+    TabController tabController,
+  ) {
     return SliverOverlapAbsorber(
       handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
       sliver: SliverSafeArea(
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           primary: true,
           stretch: true,
           forceElevated: innerBoxIsScrolled,
-          actions: appBarActions(),
+          actions: appBarActions(tabController),
           leading: CircleAvatar(
             backgroundColor: Colors.grey.shade800,
             child: FlutterLogo(),
@@ -98,11 +100,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               double.maxFinite,
               kToolbarHeight,
             ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  TabBar(
+            child: Row(
+              children: [
+                Flexible(
+                  child: TabBar(
                     controller: tabController,
                     tabs: tabs,
                     isScrollable: true,
@@ -112,24 +113,30 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       color: Colors.blue,
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(
-                        () => AddTypeOfTaskPage(),
-                        fullscreenDialog: true,
-                      );
-                    },
-                    child: Tab(
-                      child: Row(
-                        children: [
-                          Icon(Icons.add),
-                          Text("Add New List"),
-                        ],
-                      ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Get.to(
+                      () => AddTypeOfTaskPage(),
+                      fullscreenDialog: true,
+                    );
+                  },
+                  child: Tab(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 8,
+                        ),
+                        Icon(Icons.add),
+                        Text("Add New List"),
+                        SizedBox(
+                          width: 8,
+                        )
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -153,6 +160,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           final tabs = taskListController.getTabs();
           final tabController = taskListController.getTabController(this);
           final typeOfTask = taskListController.taskList;
+
           return DefaultTabController(
             length: typeOfTask.length,
             child: NestedScrollView(
