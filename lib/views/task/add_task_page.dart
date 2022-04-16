@@ -1,12 +1,15 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/date_time_picker.dart';
 import 'package:todo_amplify/components/sub_textfield.dart';
 import 'package:todo_amplify/components/title_textfield.dart';
 import 'package:todo_amplify/controllers/task_type_controller.dart';
-import 'package:todo_amplify/models/ModelProvider.dart';
+import 'package:todo_amplify/models/Task.dart';
+import 'package:todo_amplify/services/TaskService.dart';
 import 'package:todo_amplify/utils/constant.dart';
+
+import '../../models/TaskType.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -16,8 +19,12 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  final taskService= TaskService();
   final taskListController = Get.find<TaskTypeController>();
-
+  final addForm = GlobalKey<FormState>();
+  final taskNameCon = TextEditingController(),
+      detailCon = TextEditingController(),
+      dateTimeCon = TextEditingController();
   late TaskType selectedTaskType = taskListController.taskTypes[0];
 
   Widget customDropDownButton() {
@@ -55,41 +62,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  final addForm = GlobalKey<FormState>();
-  final taskNameCon = TextEditingController(),
-      detailCon = TextEditingController(),
-      dateTimeCon = TextEditingController();
-
-  Future<bool> addTodo(Task task) async {
-    try {
-      await Amplify.DataStore.save(task);
-      return true;
-    } catch (e) {
-      print('An error occurred while saving Todo: $e');
-    }
-    return false;
-  }
-
-  Future<void> saveTask() async {
-    if (!addForm.currentState!.validate()) {
-      showToast("FieldEmpty");
-      return;
-    }
-    final name = taskNameCon.text;
-    final description = detailCon.text;
-    final task = Task(
-      name: name,
-      description: description,
-      tasktypeID: selectedTaskType.getId(),
-    );
-    final okay = await addTodo(task);
-    if (okay) {
-      showToast("Success");
-      Get.back();
-    } else {
-      showToast("Failed");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +71,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              saveTask();
+              // taskService.addAllTasks(task);
             },
             icon: Icon(Icons.check),
           ),
@@ -129,7 +101,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 enableInteractiveSelection: false,
                 focusNode: AlwaysDisabledFocusNode(),
                 onTap: () {
-                  print("somethign");
                   showCustomDateTimePicker(
                     onConfirm: (date) {
 

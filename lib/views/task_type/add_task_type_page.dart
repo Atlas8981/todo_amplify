@@ -1,9 +1,7 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/controllers/task_type_controller.dart';
-import 'package:todo_amplify/models/ModelProvider.dart';
-import 'package:todo_amplify/utils/constant.dart';
 
 class AddTaskTypePage extends StatefulWidget {
   const AddTaskTypePage({Key? key}) : super(key: key);
@@ -17,33 +15,6 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
   final taskListCon = Get.find<TaskTypeController>();
   bool hasText = false;
 
-  Future<bool> saveToDatabase(String typeOfTaskName) async {
-    final typeOfTask = TaskType(
-      name: typeOfTaskName,
-
-    );
-
-    try {
-      await Amplify.DataStore.save(typeOfTask);
-      // taskListCon.addNewList(typeOfTask, null);
-      return true;
-    } catch (e) {
-      print('An error occurred while saving Todo: $e');
-    }
-    return false;
-  }
-
-  Future<void> saveTypeOfTask() async {
-    final typeOfTaskName = typeOfTaskNameCon.text;
-    final done = await saveToDatabase(typeOfTaskName);
-    if (done) {
-      showToast("Done");
-      Get.back();
-    } else {
-      showToast("Problem");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,11 +23,7 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
         title: Text("Create new list"),
         actions: [
           TextButton(
-            onPressed: hasText
-                ? () {
-                    saveTypeOfTask();
-                  }
-                : null,
+            onPressed: hasText ? () {} : null,
             child: Text(
               "Done",
               style: TextStyle(

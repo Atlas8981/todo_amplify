@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/models/ModelProvider.dart';
+import 'package:todo_amplify/models/TaskType.dart';
 
 class TaskTypeController extends GetxController {
   TabController? tabController;

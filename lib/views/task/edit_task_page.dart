@@ -1,10 +1,12 @@
-import 'package:amplify_flutter/amplify_flutter.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/sub_textfield.dart';
 import 'package:todo_amplify/components/title_textfield.dart';
 import 'package:todo_amplify/controllers/task_type_controller.dart';
-import 'package:todo_amplify/models/ModelProvider.dart';
+import 'package:todo_amplify/models/Task.dart';
+import 'package:todo_amplify/models/TaskType.dart';
+import 'package:todo_amplify/services/TaskService.dart';
 import 'package:todo_amplify/utils/constant.dart';
 
 class EditTaskPage extends StatefulWidget {
@@ -20,8 +22,12 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
+  final taskService= TaskService();
   final taskListController = Get.find<TaskTypeController>();
-
+  final editForm = GlobalKey<FormState>();
+  final taskNameCon = TextEditingController(),
+      detailCon = TextEditingController(),
+      dateTimeCon = TextEditingController();
   late TaskType selectedTypeOfTask = taskListController.taskTypes[0];
 
   Widget customDropDownButton() {
@@ -57,42 +63,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
         },
       ),
     );
-  }
-
-  final editForm = GlobalKey<FormState>();
-  final taskNameCon = TextEditingController(),
-      detailCon = TextEditingController(),
-      dateTimeCon = TextEditingController();
-
-  Future<bool> addTodo(Task task) async {
-    try {
-      await Amplify.DataStore.save(task);
-      return true;
-    } catch (e) {
-      print('An error occurred while saving Todo: $e');
-    }
-    return false;
-  }
-
-  Future<void> saveTask() async {
-    if (!editForm.currentState!.validate()) {
-      showToast("FieldEmpty");
-      return;
-    }
-    final name = taskNameCon.text;
-    final description = detailCon.text;
-    final task = Task(
-      name: name,
-      description: description,
-      tasktypeID: selectedTypeOfTask.getId(),
-    );
-    final okay = await addTodo(task);
-    if (okay) {
-      showToast("Success");
-      Get.back();
-    } else {
-      showToast("Failed");
-    }
   }
 
   @override

@@ -1,14 +1,12 @@
 import 'dart:async';
-
-import 'package:amplify_api/amplify_api.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/custom_tab_bar_indicator.dart';
 import 'package:todo_amplify/controllers/task_type_controller.dart';
-import 'package:todo_amplify/models/ModelProvider.dart';
+import 'package:todo_amplify/models/Task.dart';
+import 'package:todo_amplify/models/TaskType.dart';
+import 'package:todo_amplify/services/TaskService.dart';
 import 'package:todo_amplify/views/task/add_task_page.dart';
 import 'package:todo_amplify/views/task/edit_task_page.dart';
 import 'package:todo_amplify/views/task_type/rename_task_type.dart';
@@ -26,13 +24,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  final AmplifyDataStore _dataStorePlugin = AmplifyDataStore(
-    modelProvider: ModelProvider.instance,
-  );
-
-  late StreamSubscription<QuerySnapshot<TaskType>> _subscription;
 
   final taskListController = Get.put(TaskTypeController());
+
+  final taskService = TaskService();
 
   List<Widget> appBarActions(TabController tabController) {
     return [
@@ -333,16 +328,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget taskBodyView(TaskType typeOfTask) {
     return FutureBuilder<List<Task>?>(
-      future: Amplify.DataStore.query(
-        Task.classType,
-        where: Task.TASKTYPEID.eq(typeOfTask.id),
-      ),
+      future: taskService.getAllTasks(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
+
         final tasks = snapshot.data;
         if (tasks == null || tasks.isEmpty) {
           return Column(
@@ -428,36 +421,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _initializeApp();
-  }
-
-  Future<void> _initializeApp() async {
-    await _configureAmplify();
-
-    _subscription = Amplify.DataStore.observeQuery(TaskType.classType)
-        .listen((QuerySnapshot<TaskType> snapshot) {
-      print(snapshot.items);
-      taskListController.addNewLists(snapshot.items, this);
-    });
-  }
-
-  Future<void> _configureAmplify() async {
-    try {
-      // add Amplify plugins
-      await Amplify.addPlugins([_dataStorePlugin]);
-      await Amplify.addPlugin(
-        AmplifyAPI(modelProvider: ModelProvider.instance),
-      );
-      if (!Amplify.isConfigured) {
-        await Amplify.configure(amplifyconfig);
-      }
-    } catch (e) {
-      print('An error occurred while configuring Amplify: $e');
-    }
-  }
 
 // Future<void> getAllItem() async {
 //   try {
