@@ -20,17 +20,19 @@
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
 import 'package:amplify_core/amplify_core.dart';
+import 'SubTask.dart';
 import 'Task.dart';
-import 'TypeOfTask.dart';
+import 'TaskType.dart';
 
+export 'SubTask.dart';
 export 'Task.dart';
-export 'TypeOfTask.dart';
+export 'TaskType.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "295745ea279f29e2b488adb06f460465";
+  String version = "3ca8f8cb1e14fd4b462f0525c3e60d1f";
   @override
-  List<ModelSchema> modelSchemas = [Task.schema, TypeOfTask.schema];
+  List<ModelSchema> modelSchemas = [SubTask.schema, Task.schema, TaskType.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -39,10 +41,12 @@ class ModelProvider implements ModelProviderInterface {
   
   ModelType getModelTypeByModelName(String modelName) {
     switch(modelName) {
+      case "SubTask":
+        return SubTask.classType;
       case "Task":
         return Task.classType;
-      case "TypeOfTask":
-        return TypeOfTask.classType;
+      case "TaskType":
+        return TaskType.classType;
       default:
         throw Exception("Failed to find model in model provider for model name: " + modelName);
     }

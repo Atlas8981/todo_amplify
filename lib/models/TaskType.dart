@@ -25,10 +25,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the TypeOfTask type in your schema. */
+/** This is an auto generated class representing the TaskType type in your schema. */
 @immutable
-class TypeOfTask extends Model {
-  static const classType = const _TypeOfTaskModelType();
+class TaskType extends Model {
+  static const classType = const _TaskTypeModelType();
   final String id;
   final String? _name;
   final List<Task>? _tasks;
@@ -59,10 +59,10 @@ class TypeOfTask extends Model {
     return _updatedAt;
   }
   
-  const TypeOfTask._internal({required this.id, name, tasks, createdAt, updatedAt}): _name = name, _tasks = tasks, _createdAt = createdAt, _updatedAt = updatedAt;
+  const TaskType._internal({required this.id, name, tasks, createdAt, updatedAt}): _name = name, _tasks = tasks, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory TypeOfTask({String? id, String? name, List<Task>? tasks}) {
-    return TypeOfTask._internal(
+  factory TaskType({String? id, String? name, List<Task>? tasks}) {
+    return TaskType._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       tasks: tasks != null ? List<Task>.unmodifiable(tasks) : tasks);
@@ -75,7 +75,7 @@ class TypeOfTask extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is TypeOfTask &&
+    return other is TaskType &&
       id == other.id &&
       _name == other._name &&
       DeepCollectionEquality().equals(_tasks, other._tasks);
@@ -88,7 +88,7 @@ class TypeOfTask extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("TypeOfTask {");
+    buffer.write("TaskType {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
@@ -98,14 +98,14 @@ class TypeOfTask extends Model {
     return buffer.toString();
   }
   
-  TypeOfTask copyWith({String? id, String? name, List<Task>? tasks}) {
-    return TypeOfTask._internal(
+  TaskType copyWith({String? id, String? name, List<Task>? tasks}) {
+    return TaskType._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       tasks: tasks ?? this.tasks);
   }
   
-  TypeOfTask.fromJson(Map<String, dynamic> json)  
+  TaskType.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _tasks = json['tasks'] is List
@@ -121,14 +121,14 @@ class TypeOfTask extends Model {
     'id': id, 'name': _name, 'tasks': _tasks?.map((Task? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
-  static final QueryField ID = QueryField(fieldName: "typeOfTask.id");
+  static final QueryField ID = QueryField(fieldName: "taskType.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField TASKS = QueryField(
     fieldName: "tasks",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Task).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "TypeOfTask";
-    modelSchemaDefinition.pluralName = "TypeOfTasks";
+    modelSchemaDefinition.name = "TaskType";
+    modelSchemaDefinition.pluralName = "TaskTypes";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -144,16 +144,16 @@ class TypeOfTask extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: TypeOfTask.NAME,
+      key: TaskType.NAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: TypeOfTask.TASKS,
+      key: TaskType.TASKS,
       isRequired: false,
       ofModelName: (Task).toString(),
-      associatedKey: Task.TYPEOFTASKID
+      associatedKey: Task.TASKTYPEID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -172,11 +172,11 @@ class TypeOfTask extends Model {
   });
 }
 
-class _TypeOfTaskModelType extends ModelType<TypeOfTask> {
-  const _TypeOfTaskModelType();
+class _TaskTypeModelType extends ModelType<TaskType> {
+  const _TaskTypeModelType();
   
   @override
-  TypeOfTask fromJson(Map<String, dynamic> jsonData) {
-    return TypeOfTask.fromJson(jsonData);
+  TaskType fromJson(Map<String, dynamic> jsonData) {
+    return TaskType.fromJson(jsonData);
   }
 }

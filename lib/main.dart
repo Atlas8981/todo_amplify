@@ -16,7 +16,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -33,8 +32,10 @@ class MyApp extends StatelessWidget {
             ),
       ),
       darkTheme: ThemeData(
+        backgroundColor: Colors.grey.shade900,
+        dialogBackgroundColor: Colors.grey.shade900,
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade800,
+          backgroundColor: Colors.grey.shade900,
           shadowColor: Colors.grey,
           centerTitle: true,
         ),
@@ -44,12 +45,16 @@ class MyApp extends StatelessWidget {
         textTheme: Theme.of(context).textTheme.apply(
               bodyColor: Colors.white,
               displayColor: Colors.white,
+              decorationColor: Colors.white,
             ),
         hintColor: Colors.white60,
         iconTheme: Theme.of(context).iconTheme.copyWith(
-          color: Colors.white,
+              color: Colors.white,
+            ),
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.grey.shade900,
         ),
-        scaffoldBackgroundColor: Colors.grey.shade800,
+        scaffoldBackgroundColor: Colors.grey.shade900,
       ),
       themeMode: ThemeMode.dark,
       home: const HomePage(),

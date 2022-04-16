@@ -1,41 +1,37 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:todo_amplify/components/date_time_picker.dart';
 import 'package:todo_amplify/components/sub_textfield.dart';
 import 'package:todo_amplify/components/title_textfield.dart';
-import 'package:todo_amplify/controllers/task_list_controller.dart';
+import 'package:todo_amplify/controllers/task_type_controller.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
 import 'package:todo_amplify/utils/constant.dart';
 
-class EditTaskPage extends StatefulWidget {
-  const EditTaskPage({
-    Key? key,
-    required this.task,
-  }) : super(key: key);
-
-  final Task task;
+class AddTaskPage extends StatefulWidget {
+  const AddTaskPage({Key? key}) : super(key: key);
 
   @override
-  State<EditTaskPage> createState() => _EditTaskPageState();
+  State<AddTaskPage> createState() => _AddTaskPageState();
 }
 
-class _EditTaskPageState extends State<EditTaskPage> {
-  final taskListController = Get.find<TaskListController>();
+class _AddTaskPageState extends State<AddTaskPage> {
+  final taskListController = Get.find<TaskTypeController>();
 
-  late TypeOfTask selectedTypeOfTask = taskListController.taskList[0];
+  late TaskType selectedTaskType = taskListController.taskTypes[0];
 
   Widget customDropDownButton() {
     return Padding(
       padding: EdgeInsets.all(8),
-      child: DropdownButton<TypeOfTask>(
+      child: DropdownButton<TaskType>(
         dropdownColor: Colors.grey.shade800,
         underline: Container(),
         isDense: true,
         iconEnabledColor: Colors.white,
         borderRadius: BorderRadius.circular(8),
-        value: selectedTypeOfTask,
-        items: taskListController.taskList.map((TypeOfTask value) {
-          return DropdownMenuItem<TypeOfTask>(
+        value: selectedTaskType,
+        items: taskListController.taskTypes.map((TaskType value) {
+          return DropdownMenuItem<TaskType>(
             value: value,
             child: Text(
               value.name ?? "",
@@ -51,7 +47,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             return;
           }
           setState(() {
-            selectedTypeOfTask = value;
+            selectedTaskType = value;
             print(value);
           });
         },
@@ -59,7 +55,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     );
   }
 
-  final editForm = GlobalKey<FormState>();
+  final addForm = GlobalKey<FormState>();
   final taskNameCon = TextEditingController(),
       detailCon = TextEditingController(),
       dateTimeCon = TextEditingController();
@@ -75,7 +71,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   Future<void> saveTask() async {
-    if (!editForm.currentState!.validate()) {
+    if (!addForm.currentState!.validate()) {
       showToast("FieldEmpty");
       return;
     }
@@ -84,7 +80,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
     final task = Task(
       name: name,
       description: description,
-      typeoftaskID: selectedTypeOfTask.getId(),
+      tasktypeID: selectedTaskType.getId(),
     );
     final okay = await addTodo(task);
     if (okay) {
@@ -96,28 +92,23 @@ class _EditTaskPageState extends State<EditTaskPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    taskNameCon.text = widget.task.name ?? "";
-    detailCon.text = widget.task.description ?? "";
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Colors.transparent,
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.delete_outline_rounded),
+            onPressed: () async {
+              saveTask();
+            },
+            icon: Icon(Icons.check),
           ),
         ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
-          key: editForm,
+          key: addForm,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -135,6 +126,17 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 controller: dateTimeCon,
                 hintText: "Add date/time",
                 prefixIcons: Icons.event_available,
+                enableInteractiveSelection: false,
+                focusNode: AlwaysDisabledFocusNode(),
+                onTap: () {
+                  print("somethign");
+                  showCustomDateTimePicker(
+                    onConfirm: (date) {
+
+                    },
+                    currentTime: DateTime.now(),
+                  );
+                },
               ),
               SubTextField(
                 controller: TextEditingController(),
@@ -142,9 +144,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 prefixIcons: Icons.subdirectory_arrow_right,
                 enableInteractiveSelection: false,
                 focusNode: AlwaysDisabledFocusNode(),
-                onTap: () {
-
-                },
+                onTap: () {},
               ),
             ],
           ),

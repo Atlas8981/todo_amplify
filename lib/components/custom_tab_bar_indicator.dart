@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
@@ -31,15 +30,16 @@ class LinePainter extends BoxPainter {
           cfg.size!.height,
         );
     canvas.drawRRect(
-        RRect.fromRectAndCorners(
-          Rect.fromCenter(
-            center: circleOffset,
-            width: cfg.size!.width,
-            height: 8,
-          ),
-          topLeft: Radius.circular(3),
-          topRight: Radius.circular(3),
+      RRect.fromRectAndCorners(
+        Rect.fromCenter(
+          center: circleOffset,
+          width: cfg.size!.width,
+          height: 6,
         ),
-        _paint);
+        topLeft: Radius.circular(10),
+        topRight: Radius.circular(10),
+      ),
+      _paint,
+    );
   }
 }

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
-import 'package:todo_amplify/views/add_type_of_task_page.dart';
 
-class TaskListController extends GetxController {
+class TaskTypeController extends GetxController {
   TabController? tabController;
 
   TickerProvider? tickerProvider;
 
-  final List<TypeOfTask> taskList = [];
+  final List<TaskType> taskTypes = [];
 
-  void addNewLists(List<TypeOfTask> newLists, TickerProvider tickerProvider) {
-    taskList.clear();
-    taskList.addAll(newLists);
+  void addNewLists(
+      List<TaskType> newTaskTypes, TickerProvider tickerProvider) {
+    taskTypes.clear();
+    taskTypes.addAll(newTaskTypes);
     tabController = TabController(
       length: getTabs().length,
       vsync: tickerProvider,
@@ -20,8 +20,8 @@ class TaskListController extends GetxController {
     update();
   }
 
-  void addNewList(TypeOfTask newList, TickerProvider? tickerProvider) {
-    taskList.add(newList);
+  void addNewList(TaskType newTaskTypes, TickerProvider? tickerProvider) {
+    taskTypes.add(newTaskTypes);
     tabController = TabController(
       length: getTabs().length,
       vsync: tickerProvider ?? this.tickerProvider!,
@@ -31,7 +31,7 @@ class TaskListController extends GetxController {
 
   List<Widget> getTabs() {
     final List<Widget> listOfTabs = [];
-    final List<String> lists = taskList
+    final List<String> lists = taskTypes
         .map(
           (element) => element.name ?? "",
         )
@@ -53,5 +53,9 @@ class TaskListController extends GetxController {
     );
     this.tickerProvider = tickerProvider;
     return tabController!;
+  }
+
+  TaskType getSelectedTypeOfList() {
+    return taskTypes[tabController?.index ?? 0];
   }
 }

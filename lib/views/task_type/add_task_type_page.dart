@@ -1,25 +1,26 @@
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/controllers/task_list_controller.dart';
+import 'package:todo_amplify/controllers/task_type_controller.dart';
 import 'package:todo_amplify/models/ModelProvider.dart';
 import 'package:todo_amplify/utils/constant.dart';
 
-class AddTypeOfTaskPage extends StatefulWidget {
-  const AddTypeOfTaskPage({Key? key}) : super(key: key);
+class AddTaskTypePage extends StatefulWidget {
+  const AddTaskTypePage({Key? key}) : super(key: key);
 
   @override
-  State<AddTypeOfTaskPage> createState() => _AddTypeOfTaskPageState();
+  State<AddTaskTypePage> createState() => _AddTaskTypePageState();
 }
 
-class _AddTypeOfTaskPageState extends State<AddTypeOfTaskPage> {
+class _AddTaskTypePageState extends State<AddTaskTypePage> {
   final typeOfTaskNameCon = TextEditingController();
-  final taskListCon = Get.find<TaskListController>();
+  final taskListCon = Get.find<TaskTypeController>();
   bool hasText = false;
 
   Future<bool> saveToDatabase(String typeOfTaskName) async {
-    final typeOfTask = TypeOfTask(
+    final typeOfTask = TaskType(
       name: typeOfTaskName,
+
     );
 
     try {

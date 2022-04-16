@@ -19,24 +19,21 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Task type in your schema. */
+/** This is an auto generated class representing the SubTask type in your schema. */
 @immutable
-class Task extends Model {
-  static const classType = const _TaskModelType();
+class SubTask extends Model {
+  static const classType = const _SubTaskModelType();
   final String id;
   final String? _name;
   final String? _description;
-  final TemporalDateTime? _dateTime;
   final bool? _isComplete;
+  final TemporalDateTime? _dateTime;
   final int? _order;
-  final String? _tasktypeID;
-  final List<SubTask>? _subTasks;
+  final String? _taskID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -56,21 +53,21 @@ class Task extends Model {
     return _description;
   }
   
-  TemporalDateTime? get dateTime {
-    return _dateTime;
-  }
-  
   bool? get isComplete {
     return _isComplete;
+  }
+  
+  TemporalDateTime? get dateTime {
+    return _dateTime;
   }
   
   int? get order {
     return _order;
   }
   
-  String get tasktypeID {
+  String get taskID {
     try {
-      return _tasktypeID!;
+      return _taskID!;
     } catch(e) {
       throw new AmplifyCodeGenModelException(
           AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
@@ -81,10 +78,6 @@ class Task extends Model {
     }
   }
   
-  List<SubTask>? get subTasks {
-    return _subTasks;
-  }
-  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -93,18 +86,17 @@ class Task extends Model {
     return _updatedAt;
   }
   
-  const Task._internal({required this.id, name, description, dateTime, isComplete, order, required tasktypeID, subTasks, createdAt, updatedAt}): _name = name, _description = description, _dateTime = dateTime, _isComplete = isComplete, _order = order, _tasktypeID = tasktypeID, _subTasks = subTasks, _createdAt = createdAt, _updatedAt = updatedAt;
+  const SubTask._internal({required this.id, name, description, isComplete, dateTime, order, required taskID, createdAt, updatedAt}): _name = name, _description = description, _isComplete = isComplete, _dateTime = dateTime, _order = order, _taskID = taskID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Task({String? id, String? name, String? description, TemporalDateTime? dateTime, bool? isComplete, int? order, required String tasktypeID, List<SubTask>? subTasks}) {
-    return Task._internal(
+  factory SubTask({String? id, String? name, String? description, bool? isComplete, TemporalDateTime? dateTime, int? order, required String taskID}) {
+    return SubTask._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       description: description,
-      dateTime: dateTime,
       isComplete: isComplete,
+      dateTime: dateTime,
       order: order,
-      tasktypeID: tasktypeID,
-      subTasks: subTasks != null ? List<SubTask>.unmodifiable(subTasks) : subTasks);
+      taskID: taskID);
   }
   
   bool equals(Object other) {
@@ -114,15 +106,14 @@ class Task extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Task &&
+    return other is SubTask &&
       id == other.id &&
       _name == other._name &&
       _description == other._description &&
-      _dateTime == other._dateTime &&
       _isComplete == other._isComplete &&
+      _dateTime == other._dateTime &&
       _order == other._order &&
-      _tasktypeID == other._tasktypeID &&
-      DeepCollectionEquality().equals(_subTasks, other._subTasks);
+      _taskID == other._taskID;
   }
   
   @override
@@ -132,14 +123,14 @@ class Task extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Task {");
+    buffer.write("SubTask {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("description=" + "$_description" + ", ");
-    buffer.write("dateTime=" + (_dateTime != null ? _dateTime!.format() : "null") + ", ");
     buffer.write("isComplete=" + (_isComplete != null ? _isComplete!.toString() : "null") + ", ");
+    buffer.write("dateTime=" + (_dateTime != null ? _dateTime!.format() : "null") + ", ");
     buffer.write("order=" + (_order != null ? _order!.toString() : "null") + ", ");
-    buffer.write("tasktypeID=" + "$_tasktypeID" + ", ");
+    buffer.write("taskID=" + "$_taskID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -147,52 +138,42 @@ class Task extends Model {
     return buffer.toString();
   }
   
-  Task copyWith({String? id, String? name, String? description, TemporalDateTime? dateTime, bool? isComplete, int? order, String? tasktypeID, List<SubTask>? subTasks}) {
-    return Task._internal(
+  SubTask copyWith({String? id, String? name, String? description, bool? isComplete, TemporalDateTime? dateTime, int? order, String? taskID}) {
+    return SubTask._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      dateTime: dateTime ?? this.dateTime,
       isComplete: isComplete ?? this.isComplete,
+      dateTime: dateTime ?? this.dateTime,
       order: order ?? this.order,
-      tasktypeID: tasktypeID ?? this.tasktypeID,
-      subTasks: subTasks ?? this.subTasks);
+      taskID: taskID ?? this.taskID);
   }
   
-  Task.fromJson(Map<String, dynamic> json)  
+  SubTask.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _description = json['description'],
-      _dateTime = json['dateTime'] != null ? TemporalDateTime.fromString(json['dateTime']) : null,
       _isComplete = json['isComplete'],
+      _dateTime = json['dateTime'] != null ? TemporalDateTime.fromString(json['dateTime']) : null,
       _order = (json['order'] as num?)?.toInt(),
-      _tasktypeID = json['tasktypeID'],
-      _subTasks = json['subTasks'] is List
-        ? (json['subTasks'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => SubTask.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
+      _taskID = json['taskID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'description': _description, 'dateTime': _dateTime?.format(), 'isComplete': _isComplete, 'order': _order, 'tasktypeID': _tasktypeID, 'subTasks': _subTasks?.map((SubTask? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'description': _description, 'isComplete': _isComplete, 'dateTime': _dateTime?.format(), 'order': _order, 'taskID': _taskID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
-  static final QueryField ID = QueryField(fieldName: "task.id");
+  static final QueryField ID = QueryField(fieldName: "subTask.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
-  static final QueryField DATETIME = QueryField(fieldName: "dateTime");
   static final QueryField ISCOMPLETE = QueryField(fieldName: "isComplete");
+  static final QueryField DATETIME = QueryField(fieldName: "dateTime");
   static final QueryField ORDER = QueryField(fieldName: "order");
-  static final QueryField TASKTYPEID = QueryField(fieldName: "tasktypeID");
-  static final QueryField SUBTASKS = QueryField(
-    fieldName: "subTasks",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (SubTask).toString()));
+  static final QueryField TASKID = QueryField(fieldName: "taskID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Task";
-    modelSchemaDefinition.pluralName = "Tasks";
+    modelSchemaDefinition.name = "SubTask";
+    modelSchemaDefinition.pluralName = "SubTasks";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -208,46 +189,39 @@ class Task extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.NAME,
+      key: SubTask.NAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.DESCRIPTION,
+      key: SubTask.DESCRIPTION,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.DATETIME,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.ISCOMPLETE,
+      key: SubTask.ISCOMPLETE,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.bool)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.ORDER,
+      key: SubTask.DATETIME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: SubTask.ORDER,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.int)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Task.TASKTYPEID,
+      key: SubTask.TASKID,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Task.SUBTASKS,
-      isRequired: false,
-      ofModelName: (SubTask).toString(),
-      associatedKey: SubTask.TASKID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -266,11 +240,11 @@ class Task extends Model {
   });
 }
 
-class _TaskModelType extends ModelType<Task> {
-  const _TaskModelType();
+class _SubTaskModelType extends ModelType<SubTask> {
+  const _SubTaskModelType();
   
   @override
-  Task fromJson(Map<String, dynamic> jsonData) {
-    return Task.fromJson(jsonData);
+  SubTask fromJson(Map<String, dynamic> jsonData) {
+    return SubTask.fromJson(jsonData);
   }
 }
