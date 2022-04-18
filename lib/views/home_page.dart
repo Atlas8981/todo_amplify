@@ -7,6 +7,7 @@ import 'package:todo_amplify/controllers/task_type_controller.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 import 'package:todo_amplify/services/TaskService.dart';
+import 'package:todo_amplify/utils/constant.dart';
 import 'package:todo_amplify/views/task/add_task_page.dart';
 import 'package:todo_amplify/views/task/edit_task_page.dart';
 import 'package:todo_amplify/views/task_type/rename_task_type.dart';
@@ -25,6 +26,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
+  // final taskListController = Get.put(TaskTypeController());
   final taskListController = Get.put(TaskTypeController());
 
   final taskService = TaskService();
@@ -254,6 +256,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          if (taskListController.taskTypes.isEmpty) {
+            showToast("Add List Before add tasks");
+            return;
+          }
           Get.to(() => AddTaskPage());
         },
         child: Icon(Icons.add),
@@ -261,8 +267,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       bottomNavigationBar: bottomAppBar(),
       body: GetBuilder<TaskTypeController>(
         builder: (controller) {
-          final tabs = taskListController.getTabs();
+
           final tabController = taskListController.getTabController(this);
+          final tabs = taskListController.getTabs();
           final typeOfTask = taskListController.taskTypes;
 
           return DefaultTabController(
@@ -420,7 +427,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       },
     );
   }
-
 
 // Future<void> getAllItem() async {
 //   try {

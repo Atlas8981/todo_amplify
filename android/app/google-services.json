@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "517060254721",
+    "project_id": "tverey-5299b",
+    "storage_bucket": "tverey-5299b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517060254721:android:3f8b6c215da076ee38b400",
+        "android_client_info": {
+          "package_name": "com.atlas.todo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517060254721-0fdbvm02vsu705g0gcthr22hndo78h0s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.atlas.todo",
+            "certificate_hash": "c7759eb5c486771e03dba1ab14294ff539504e93"
+          }
+        },
+        {
+          "client_id": "517060254721-u2n85h5mchjj57t1ha0vcf7kkfbmf38d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeUZppAYPSeXDVraESjh9yf5qpLr_jlrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517060254721-u2n85h5mchjj57t1ha0vcf7kkfbmf38d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

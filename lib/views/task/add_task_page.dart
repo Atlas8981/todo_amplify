@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/date_time_picker.dart';
@@ -19,7 +19,7 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  final taskService= TaskService();
+  final taskService = TaskService();
   final taskListController = Get.find<TaskTypeController>();
   final addForm = GlobalKey<FormState>();
   final taskNameCon = TextEditingController(),
@@ -62,7 +62,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +70,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              // taskService.addAllTasks(task);
+              onCheckButtonTap();
             },
             icon: Icon(Icons.check),
           ),
@@ -84,6 +83,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 8,
+              ),
               customDropDownButton(),
               TitleTextField(
                 controller: taskNameCon,
@@ -101,12 +103,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 enableInteractiveSelection: false,
                 focusNode: AlwaysDisabledFocusNode(),
                 onTap: () {
-                  showCustomDateTimePicker(
-                    onConfirm: (date) {
-
-                    },
-                    currentTime: DateTime.now(),
-                  );
+                  _selectDate(context);
                 },
               ),
               SubTextField(
@@ -122,5 +119,37 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ),
       ),
     );
+  }
+
+  DateTime? selectedDate;
+
+  void _selectDate(BuildContext context) {
+    showCustomDateTimePicker(
+      context: context,
+      currentTime: selectedDate ?? DateTime.now(),
+      onConfirm: (date) {
+        if (date != selectedDate) {
+          setState(() {
+            selectedDate = date;
+            dateTimeCon.text = formatDateTime(date);
+          });
+        }
+      },
+    );
+  }
+
+  void onCheckButtonTap() {
+    final taskTypeId = selectedTaskType.id;
+    final taskName = taskNameCon.text;
+    final description = detailCon.text;
+
+    final Task task = Task(
+        id: "0",
+        name: taskName,
+        description: description,
+        isComplete: false,
+        deadline:
+            (selectedDate == null) ? null : Timestamp.fromDate(selectedDate!));
+    taskService.addTasks(task, taskTypeId);
   }
 }

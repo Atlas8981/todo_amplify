@@ -56,6 +56,7 @@ dependencies:
   animations: ^2.0.2
   animated_check: ^1.0.5
   json_annotation: ^4.4.0
+  intl: ^0.17.0
 
 
 dev_dependencies:

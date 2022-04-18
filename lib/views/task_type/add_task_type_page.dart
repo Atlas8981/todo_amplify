@@ -1,7 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/controllers/task_type_controller.dart';
+import 'package:todo_amplify/models/TaskType.dart';
+import 'package:todo_amplify/services/TaskService.dart';
+import 'package:todo_amplify/utils/constant.dart';
 
 class AddTaskTypePage extends StatefulWidget {
   const AddTaskTypePage({Key? key}) : super(key: key);
@@ -13,6 +15,7 @@ class AddTaskTypePage extends StatefulWidget {
 class _AddTaskTypePageState extends State<AddTaskTypePage> {
   final typeOfTaskNameCon = TextEditingController();
   final taskListCon = Get.find<TaskTypeController>();
+  final taskService = TaskService();
   bool hasText = false;
 
   @override
@@ -23,7 +26,11 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
         title: Text("Create new list"),
         actions: [
           TextButton(
-            onPressed: hasText ? () {} : null,
+            onPressed: hasText
+                ? () {
+                    onDoneButtonTap();
+                  }
+                : null,
             child: Text(
               "Done",
               style: TextStyle(
@@ -47,7 +54,7 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
                 top: 16,
                 bottom: 16,
               ),
-              hintText: "Enter New List",
+              hintText: "Enter list's name",
               border: OutlineInputBorder(),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -71,5 +78,17 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
         ],
       ),
     );
+  }
+
+  Future<void> onDoneButtonTap() async {
+    final taskTypeName = typeOfTaskNameCon.text;
+    if (taskTypeName.isNotEmpty) {
+      final isDone = await taskService.addTaskTypes(taskTypeName);
+      if (isDone) {
+        Get.back();
+      } else {
+        showToast("Something went wrong");
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 const String imageDir = "assets/images/";
 
@@ -19,6 +20,17 @@ String? validatePhoneNumber(String? value) {
     return 'Incorrect Phone Format';
   }
   return null;
+}
+
+final dateFormat = DateFormat('d MMMM y');
+
+String formatDateTime(DateTime? date) {
+  final intToMonth = DateFormat('MMMM');
+  if (date == null) {
+    return "";
+  }
+  final month = intToMonth.format(date);
+  return "${date.day} ${month.tr} ${date.year}";
 }
 
 void showToast(String message) {
