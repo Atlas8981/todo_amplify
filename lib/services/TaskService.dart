@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:todo_amplify/models/SubTask.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 
@@ -21,7 +23,9 @@ class TaskService {
 
       return true;
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return false;
   }
@@ -30,15 +34,32 @@ class TaskService {
     final id = db.collection(taskTypeCollection).doc().id;
     final tempTask = Task(
       id: id,
+      name: task.name,
+      deadline: task.deadline,
+      description: task.description,
+      isComplete: false,
+      subTasks: [] as List<SubTask>,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     );
+
     try {
-      await db.collection(taskCollection).doc(id).set(task.toJson());
-      // taskTypeController.addNewList(taskType, null);
-      return true;
+      final docSnapshot =
+          await db.collection(taskTypeCollection).doc(taskTypeId).get();
+      if (docSnapshot.exists) {
+        final taskType = TaskType.fromJson(docSnapshot.data()!);
+        taskType.tasks ??= [];
+        taskType.tasks!.add(tempTask);
+        db
+            .collection(taskTypeCollection)
+            .doc(taskType.id)
+            .set(taskType.toJson());
+        return true;
+      }
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return false;
   }
@@ -47,17 +68,21 @@ class TaskService {
     try {
       await db.collection(taskTypeCollection).get();
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return null;
   }
 
-  Future<List<Task>?> getAllTasks() async {
+  Future<List<Task>?> getAllTasks(TaskType taskType) async {
     try {
-      await db.collection(taskCollection).get();
+      // await db.collection(taskTypeCollection).doc(taskType.id).get();
       return [];
     } catch (e) {
-      print(e.toString());
+      if (kDebugMode) {
+        print(e.toString());
+      }
     }
     return null;
   }

@@ -21,7 +21,7 @@ class _RenameTaskTypePageState extends State<RenameTaskTypePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Rename list"),
+        title: const Text("Rename list"),
         actions: [
           TextButton(
             onPressed: hasText ? () {} : null,
@@ -38,18 +38,18 @@ class _RenameTaskTypePageState extends State<RenameTaskTypePage> {
         children: [
           TextFormField(
             controller: typeOfTaskNameCon,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(
+              contentPadding: const EdgeInsets.only(
                 left: 16,
                 top: 16,
                 bottom: 16,
               ),
               hintText: "Enter New List",
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.grey.shade700,

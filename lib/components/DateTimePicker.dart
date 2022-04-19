@@ -40,7 +40,7 @@ Widget cupertinoDateTimePicker({
                 },
                 child: Text(
                   "cancel".tr,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
               TextButton(
@@ -52,7 +52,7 @@ Widget cupertinoDateTimePicker({
                   }
                   Get.back();
                 },
-                child: Text("Confirm"),
+                child: const Text("Confirm"),
               )
             ],
           ),

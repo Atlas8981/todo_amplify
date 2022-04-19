@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_amplify/models/SubTask.dart';
 
-
 class Task {
   final String id;
-  final String? name;
-  final String? description;
-  final Timestamp? deadline;
-  final bool? isComplete;
-  final int? order;
-  final List<SubTask>? subTasks;
+  String? name;
+  String? description;
+  Timestamp? deadline;
+  bool? isComplete;
+  int? order;
+  List<SubTask>? subTasks;
   final Timestamp? createdAt;
-  final Timestamp? updatedAt;
+  Timestamp? updatedAt;
 
   Task({
     required this.id,
@@ -44,7 +43,7 @@ class Task {
             : json["deadline"],
         name: json["name"],
         subTasks:
-            List<SubTask>.from(json["SubTask"].map((x) => SubTask.fromJson(x))),
+            List<SubTask>.from(json["subTasks"].map((x) => SubTask.fromJson(x))),
         isComplete: json["isComplete"],
         order: json["order"],
         description: json["description"],

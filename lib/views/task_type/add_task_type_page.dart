@@ -22,7 +22,7 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text("Create new list"),
+        title: const Text("Create new list"),
         actions: [
           TextButton(
             onPressed: hasText
@@ -43,18 +43,18 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
         children: [
           TextFormField(
             controller: typeOfTaskNameCon,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(
+              contentPadding: const EdgeInsets.only(
                 left: 16,
                 top: 16,
                 bottom: 16,
               ),
               hintText: "Enter list's name",
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                   color: Colors.grey.shade700,

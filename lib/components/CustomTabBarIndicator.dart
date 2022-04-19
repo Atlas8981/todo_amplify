@@ -23,21 +23,21 @@ class LinePainter extends BoxPainter {
           ..isAntiAlias = true;
 
   @override
-  void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
+  void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
     final Offset circleOffset = offset +
         Offset(
-          cfg.size!.width / 2,
-          cfg.size!.height,
+          configuration.size!.width / 2,
+          configuration.size!.height,
         );
     canvas.drawRRect(
       RRect.fromRectAndCorners(
         Rect.fromCenter(
           center: circleOffset,
-          width: cfg.size!.width,
+          width: configuration.size!.width,
           height: 6,
         ),
-        topLeft: Radius.circular(10),
-        topRight: Radius.circular(10),
+        topLeft: const Radius.circular(10),
+        topRight: const Radius.circular(10),
       ),
       _paint,
     );

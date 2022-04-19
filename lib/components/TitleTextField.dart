@@ -13,7 +13,7 @@ class TitleTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 24,
         color: Colors.white,
       ),

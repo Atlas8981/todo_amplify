@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class SubTask {
   final String id;
@@ -25,36 +24,36 @@ class SubTask {
   });
 
   factory SubTask.fromJson(Map<String, dynamic> json) => SubTask(
-    id: json["id"],
-    createdAt: (json["createdAt"] is int)
-        ? Timestamp.fromDate(
-      DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
-    )
-        : json["createdAt"],
-    updatedAt: (json["updatedAt"] is int)
-        ? Timestamp.fromDate(
-      DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]),
-    )
-        : json["updatedAt"],
-    deadline: (json["deadline"] is int)
-        ? Timestamp.fromDate(
-      DateTime.fromMillisecondsSinceEpoch(json["deadline"]),
-    )
-        : json["deadline"],
-    name: json["name"],
-    isComplete: json["isComplete"],
-    order: json["order"],
-    description: json["description"],
-  );
+        id: json["id"],
+        createdAt: (json["createdAt"] is int)
+            ? Timestamp.fromDate(
+                DateTime.fromMillisecondsSinceEpoch(json["createdAt"]),
+              )
+            : json["createdAt"],
+        updatedAt: (json["updatedAt"] is int)
+            ? Timestamp.fromDate(
+                DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]),
+              )
+            : json["updatedAt"],
+        deadline: (json["deadline"] is int)
+            ? Timestamp.fromDate(
+                DateTime.fromMillisecondsSinceEpoch(json["deadline"]),
+              )
+            : json["deadline"],
+        name: json["name"],
+        isComplete: json["isComplete"],
+        order: json["order"],
+        description: json["description"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "deadline": deadline,
-    "isComplete": isComplete,
-    "order": order,
-    "description": description,
-    "createdAt": createdAt,
-    "updatedAt": updatedAt,
-  };
+        "id": id,
+        "name": name,
+        "deadline": deadline,
+        "isComplete": isComplete,
+        "order": order,
+        "description": description,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+      };
 }

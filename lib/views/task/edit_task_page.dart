@@ -1,13 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/components/sub_textfield.dart';
-import 'package:todo_amplify/components/title_textfield.dart';
+import 'package:todo_amplify/components/SubTextField.dart';
+import 'package:todo_amplify/components/TitleTextField.dart';
 import 'package:todo_amplify/controllers/TaskTypeController.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 import 'package:todo_amplify/services/TaskService.dart';
-import 'package:todo_amplify/utils/constant.dart';
 
 class EditTaskPage extends StatefulWidget {
   const EditTaskPage({
@@ -22,7 +20,7 @@ class EditTaskPage extends StatefulWidget {
 }
 
 class _EditTaskPageState extends State<EditTaskPage> {
-  final taskService= TaskService();
+  final taskService = TaskService();
   final taskListController = Get.find<TaskTypeController>();
   final editForm = GlobalKey<FormState>();
   final taskNameCon = TextEditingController(),
@@ -32,7 +30,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
 
   Widget customDropDownButton() {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: DropdownButton<TaskType>(
         dropdownColor: Colors.grey.shade800,
         underline: Container(),
@@ -45,7 +43,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
             value: value,
             child: Text(
               value.name ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
               ),
@@ -58,7 +56,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
           }
           setState(() {
             selectedTypeOfTask = value;
-            print(value);
           });
         },
       ),
@@ -80,12 +77,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.delete_outline_rounded),
+            icon: const Icon(Icons.delete_outline_rounded),
           ),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: editForm,
           child: Column(
@@ -112,9 +109,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 prefixIcons: Icons.subdirectory_arrow_right,
                 enableInteractiveSelection: false,
                 focusNode: AlwaysDisabledFocusNode(),
-                onTap: () {
-
-                },
+                onTap: () {},
               ),
             ],
           ),

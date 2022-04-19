@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/DateTimePicker.dart';
-import 'package:todo_amplify/components/sub_textfield.dart';
-import 'package:todo_amplify/components/title_textfield.dart';
+import 'package:todo_amplify/components/SubTextField.dart';
+import 'package:todo_amplify/components/TitleTextField.dart';
 import 'package:todo_amplify/controllers/TaskTypeController.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
@@ -39,19 +39,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
             onPressed: () async {
               onCheckButtonTap();
             },
-            icon: Icon(Icons.check),
+            icon: const Icon(Icons.check),
           ),
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: addForm,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 customDropDownButton(),
                 TitleTextField(
                   controller: taskNameCon,
@@ -86,16 +86,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   },
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 8),
+                  padding: const EdgeInsets.only(left: 8),
                   child: Theme(
                     data: Theme.of(context).copyWith(
                       unselectedWidgetColor: Colors.white,
                     ),
                     child: ReorderableListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       onReorder: (oldIndex, newIndex) {
-                        print("reordering");
                         setState(() {
                           if (newIndex > oldIndex) {
                             newIndex = newIndex - 1;
@@ -104,8 +103,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           listSubTaskName.insert(newIndex, item);
                         });
                       },
-                      itemCount:
-                          listSubTaskName.length /*listSubTaskWidgets.length*/,
+                      itemCount: listSubTaskName.length,
                       itemBuilder: (context, index) {
                         return RadioListTile(
                           key: ValueKey(index),
@@ -124,7 +122,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 subTaskTextControllers.removeAt(index);
                               });
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.clear,
                               color: Colors.white,
                             ),
@@ -144,7 +142,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   Widget customDropDownButton() {
     return Padding(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: DropdownButton<TaskType>(
         dropdownColor: Colors.grey.shade800,
         underline: Container(),
@@ -157,7 +155,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             value: value,
             child: Text(
               value.name ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.blue,
                 fontSize: 18,
               ),
@@ -170,7 +168,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
           }
           setState(() {
             selectedTaskType = value;
-            print(value);
           });
         },
       ),
@@ -192,11 +189,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  void onCheckButtonTap() {
+  Future<void> onCheckButtonTap() async {
     final taskTypeId = selectedTaskType.id;
     final taskName = taskNameCon.text;
     final description = detailCon.text;
-
     final task = Task(
       id: "0",
       name: taskName,
@@ -205,6 +201,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       deadline:
           (selectedDate == null) ? null : Timestamp.fromDate(selectedDate!),
     );
-    taskService.addTasks(task, taskTypeId);
+    final isDone = await taskService.addTasks(task, taskTypeId);
+    if (isDone) {
+      Get.back();
+    }
   }
 }

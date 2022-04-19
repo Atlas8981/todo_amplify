@@ -25,7 +25,7 @@ class SubTextField extends StatelessWidget {
       child: TextFormField(
         onTap: onTap,
         controller: controller,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           color: Colors.white,
         ),

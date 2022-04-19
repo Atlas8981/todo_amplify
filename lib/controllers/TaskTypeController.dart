@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/models/TaskType.dart';
-import 'package:todo_amplify/services/TaskService.dart';
 
 class TaskTypeController extends GetxController {
   final List<TaskType> taskTypes = [];

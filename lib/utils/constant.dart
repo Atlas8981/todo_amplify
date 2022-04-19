@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 const String imageDir = "assets/images/";
 
-final redColor = Color.fromARGB(255, 236, 0, 0);
+const redColor = Color.fromARGB(255, 236, 0, 0);
 
 const String dummyNetworkImage =
     "https://firebasestorage.googleapis.com/v0/b/mygoods-e042f.appspot.com/o/flutter%2F2021-10-31%2021%3A58%3A15.282499?alt=media&token=f492b829-e106-467e-b3f1-6c05122a0969";

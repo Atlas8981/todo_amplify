@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import 'package:todo_amplify/views/task/add_task_page.dart';
 import 'package:todo_amplify/views/task/edit_task_page.dart';
 import 'package:todo_amplify/views/task_type/rename_task_type.dart';
 
-import '../amplifyconfiguration.dart';
 import 'task_type/add_task_type_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,10 +31,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<Widget> appBarActions(TabController tabController) {
     return [
       IconButton(
-        onPressed: () {
-          tabController.animateTo(2);
-        },
-        icon: Icon(CupertinoIcons.gear),
+        onPressed: () {},
+        icon: const Icon(CupertinoIcons.gear),
       )
     ];
   }
@@ -46,7 +42,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return BottomAppBar(
       notchMargin: 8,
       elevation: 24,
-      shape: CircularNotchedRectangle(),
+      shape: const CircularNotchedRectangle(),
       child: SizedBox(
         height: 75,
         child: Row(
@@ -55,7 +51,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           children: [
             IconButton(
               iconSize: 28.0,
-              icon: Icon(Icons.menu),
+              icon: const Icon(Icons.menu),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -68,7 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             IconButton(
               iconSize: 28.0,
-              icon: Icon(Icons.more_vert_rounded),
+              icon: const Icon(Icons.more_vert_rounded),
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -87,7 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget moreMenuBottomSheet() {
     return Container(
-      padding: EdgeInsets.only(top: 5, right: 8),
+      padding: const EdgeInsets.only(top: 5, right: 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +96,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text(
+                    title: const Text(
                       "Sort by",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -110,7 +106,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           RadioListTile(
-                            title: Text(
+                            title: const Text(
                               "My order",
                               style: TextStyle(
                                 fontSize: 16,
@@ -119,10 +115,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             value: 1,
                             groupValue: 2,
                             onChanged: (value) {},
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                           ),
                           RadioListTile(
-                            title: Text(
+                            title: const Text(
                               "Date",
                               style: TextStyle(
                                 fontSize: 16,
@@ -131,7 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                             value: 2,
                             groupValue: 2,
                             onChanged: (value) {},
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                           ),
                         ],
                       ),
@@ -142,7 +138,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             },
             subTitle: "My Order",
           ),
-          Divider(
+          const Divider(
             color: Colors.white24,
             thickness: 1,
             height: 1,
@@ -150,7 +146,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           BottomSheetItem(
             title: "Rename List",
             onTap: () {
-              Get.to(() => RenameTaskTypePage());
+              Get.to(() => const RenameTaskTypePage());
             },
           ),
           BottomSheetItem(
@@ -168,7 +164,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   Widget typeOfTasksBottomSheet(List<TaskType> listOfTask) {
     return Container(
-      padding: EdgeInsets.only(top: 5, right: 8),
+      padding: const EdgeInsets.only(top: 5, right: 8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,7 +182,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               },
             );
           }).toList(),
-          Divider(
+          const Divider(
             color: Colors.white24,
             thickness: 1,
             height: 1,
@@ -194,14 +190,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           SizedBox(
             width: double.maxFinite,
             child: ListTile(
-              title: Text("Create new list"),
-              contentPadding: EdgeInsets.all(0),
-              leading: Icon(
+              title: const Text("Create new list"),
+              contentPadding: const EdgeInsets.all(0),
+              leading: const Icon(
                 Icons.add,
                 color: Colors.white60,
               ),
               onTap: () {
-                Get.to(() => AddTaskTypePage());
+                Get.to(() => const AddTaskTypePage());
               },
             ),
           ),
@@ -231,7 +227,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           actions: appBarActions(tabController),
           leading: CircleAvatar(
             backgroundColor: Colors.grey.shade900,
-            child: FlutterLogo(),
+            child: const FlutterLogo(),
           ),
           bottom: TabBar(
             controller: tabController,
@@ -248,8 +244,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -260,9 +254,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             showToast("Add List Before add tasks");
             return;
           }
-          Get.to(() => AddTaskPage());
+          Get.to(() => const AddTaskPage());
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: bottomAppBar(),
       body: GetBuilder<TaskTypeController>(
@@ -351,8 +345,89 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   }
 
   Widget taskBodyView(TaskType typeOfTask) {
+    if (typeOfTask.tasks != null) {
+      final tasks = typeOfTask.tasks!;
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            ListView.builder(
+              padding: const EdgeInsets.all(0),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: tasks.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Get.to(() => EditTaskPage(task: tasks[index]));
+                  },
+                  onLongPress: _showCustomMenu,
+                  onTapDown: _storePosition,
+                  child: ListTile(
+                    title: Text(
+                      tasks[index].name ?? "",
+                    ),
+                  ),
+                );
+              },
+            ),
+            const Divider(
+              thickness: 3,
+            ),
+            ExpansionTile(
+              title: const Text("Complete (11)"),
+              children: [
+                ListView.builder(
+                  padding: const EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (context, index) => ListTile(
+                    title: Text(
+                      "Something $index",
+                      style: const TextStyle(
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    } else {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          FlutterLogo(
+            size: 120,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            "No tasks yet",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            "Add your to-dos",
+            style: TextStyle(
+              color: Colors.white60,
+            ),
+          )
+        ],
+      );
+    }
     return FutureBuilder<List<Task>?>(
-      future: taskService.getAllTasks(),
+      future: taskService.getAllTasks(typeOfTask),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -365,7 +440,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               FlutterLogo(
                 size: 120,
               ),
@@ -396,7 +471,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: Column(
             children: [
               ListView.builder(
-                padding: EdgeInsets.all(0),
+                padding: const EdgeInsets.all(0),
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: tasks.length,
@@ -415,21 +490,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   );
                 },
               ),
-              Divider(
+              const Divider(
                 thickness: 3,
               ),
               ExpansionTile(
-                title: Text("Complete (11)"),
+                title: const Text("Complete (11)"),
                 children: [
                   ListView.builder(
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: 10,
                     itemBuilder: (context, index) => ListTile(
                       title: Text(
                         "Something $index",
-                        style: TextStyle(
+                        style: const TextStyle(
                           decoration: TextDecoration.lineThrough,
                         ),
                       ),
@@ -480,7 +555,7 @@ class PlusMinusEntry extends PopupMenuEntry<int> {
   double height = 100;
 
   @override
-  bool represents(int? n) => n == 1 || n == -1;
+  bool represents(int? value) => value == 1 || value == -1;
 
   @override
   PlusMinusEntryState createState() => PlusMinusEntryState();
@@ -502,13 +577,13 @@ class PlusMinusEntryState extends State<PlusMinusEntry> {
         Expanded(
           child: TextButton(
             onPressed: _plus1,
-            child: Text('+1'),
+            child: const Text('+1'),
           ),
         ),
         Expanded(
           child: TextButton(
             onPressed: _minus1,
-            child: Text('-1'),
+            child: const Text('-1'),
           ),
         ),
       ],
@@ -533,10 +608,10 @@ class BottomSheetItem extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       child: ListTile(
-        contentPadding: EdgeInsets.only(left: 24),
+        contentPadding: const EdgeInsets.only(left: 24),
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
@@ -544,7 +619,7 @@ class BottomSheetItem extends StatelessWidget {
             ? null
             : Text(
                 subTitle ?? "",
-                style: TextStyle(color: Colors.white12, fontSize: 12),
+                style: const TextStyle(color: Colors.white12, fontSize: 12),
               ),
         onTap: onTap,
       ),
@@ -571,18 +646,18 @@ class TypeOfTaskBottomSheetListItem extends StatelessWidget {
       child: ListTile(
         title: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
           ),
         ),
-        leading: Icon(
+        leading: const Icon(
           Icons.ac_unit,
           color: Colors.transparent,
         ),
         onTap: onTap,
       ),
       decoration: isSelected
-          ? BoxDecoration(
+          ? const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(24),
                 bottomRight: Radius.circular(24),
