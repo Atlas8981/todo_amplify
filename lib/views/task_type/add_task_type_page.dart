@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/controllers/task_type_controller.dart';
-import 'package:todo_amplify/models/TaskType.dart';
+import 'package:todo_amplify/controllers/TaskTypeController.dart';
 import 'package:todo_amplify/services/TaskService.dart';
 import 'package:todo_amplify/utils/constant.dart';
 
@@ -81,6 +80,9 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
   }
 
   Future<void> onDoneButtonTap() async {
+    setState(() {
+      hasText = false;
+    });
     final taskTypeName = typeOfTaskNameCon.text;
     if (taskTypeName.isNotEmpty) {
       final isDone = await taskService.addTaskTypes(taskTypeName);
@@ -90,5 +92,8 @@ class _AddTaskTypePageState extends State<AddTaskTypePage> {
         showToast("Something went wrong");
       }
     }
+    setState(() {
+      hasText = true;
+    });
   }
 }

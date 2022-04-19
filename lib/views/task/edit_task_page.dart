@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/components/sub_textfield.dart';
 import 'package:todo_amplify/components/title_textfield.dart';
-import 'package:todo_amplify/controllers/task_type_controller.dart';
+import 'package:todo_amplify/controllers/TaskTypeController.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 import 'package:todo_amplify/services/TaskService.dart';

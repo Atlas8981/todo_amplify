@@ -5,7 +5,7 @@ class SubTextField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.hintText,
-    required this.prefixIcons,
+    this.prefixIcons,
     this.enableInteractiveSelection = true,
     this.focusNode,
     this.onTap,
@@ -13,7 +13,7 @@ class SubTextField extends StatelessWidget {
 
   final TextEditingController controller;
   final String hintText;
-  final IconData prefixIcons;
+  final IconData? prefixIcons;
   final bool enableInteractiveSelection;
   final FocusNode? focusNode;
   final Function()? onTap;
@@ -21,8 +21,9 @@ class SubTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: (onTap == null) ? null : () {},
       child: TextFormField(
+        onTap: onTap,
         controller: controller,
         style: TextStyle(
           fontSize: 18,
@@ -31,10 +32,12 @@ class SubTextField extends StatelessWidget {
         enableInteractiveSelection: enableInteractiveSelection,
         focusNode: focusNode,
         decoration: InputDecoration(
-          prefixIcon: Icon(
-            prefixIcons,
-            color: Colors.white60,
-          ),
+          prefixIcon: (prefixIcons == null)
+              ? null
+              : Icon(
+                  prefixIcons,
+                  color: Colors.white60,
+                ),
           hintText: hintText,
           border: InputBorder.none,
         ),

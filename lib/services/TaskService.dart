@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
-import 'package:todo_amplify/controllers/task_type_controller.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 
@@ -8,8 +6,6 @@ class TaskService {
   final db = FirebaseFirestore.instance;
   static const String taskTypeCollection = "taskTypes";
   static const String taskCollection = "tasks";
-
-  final taskTypeController = Get.find<TaskTypeController>();
 
   Future<bool> addTaskTypes(String taskTypeName) async {
     final id = db.collection(taskTypeCollection).doc().id;
@@ -22,7 +18,7 @@ class TaskService {
     );
     try {
       await db.collection(taskTypeCollection).doc(id).set(taskType.toJson());
-      taskTypeController.addNewList(taskType, null);
+
       return true;
     } catch (e) {
       print(e.toString());

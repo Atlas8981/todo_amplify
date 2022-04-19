@@ -4,8 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:todo_amplify/views/home_page.dart';
 
-import 'controllers/initial_binding.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
@@ -23,8 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Amplify Todo',
-      // initialBinding: InitialBinding(),
+      title: 'Flutter Firebase Todo',
       theme: ThemeData(
         appBarTheme: AppBarTheme(
           centerTitle: true,

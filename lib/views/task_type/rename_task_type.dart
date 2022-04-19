@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/controllers/task_type_controller.dart';
+import 'package:todo_amplify/controllers/TaskTypeController.dart';
 
 class RenameTaskTypePage extends StatefulWidget {
   const RenameTaskTypePage({

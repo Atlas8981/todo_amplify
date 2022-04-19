@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 Future<void> showCustomDateTimePicker({
   context,
   required Function(DateTime date) onConfirm,
-  required DateTime currentTime,
+  required DateTime? currentTime,
 }) async {
   Get.bottomSheet(
     cupertinoDateTimePicker(
@@ -21,8 +21,9 @@ Future<void> showCustomDateTimePicker({
 
 Widget cupertinoDateTimePicker({
   required Function(DateTime date) onConfirm,
-  required DateTime currentTime,
+  required DateTime? currentTime,
 }) {
+  final now = DateTime.now();
   DateTime? picked;
   return SizedBox(
     height: 250,
@@ -51,7 +52,7 @@ Widget cupertinoDateTimePicker({
                   }
                   Get.back();
                 },
-                child: Text("confirm".tr),
+                child: Text("Confirm"),
               )
             ],
           ),
@@ -59,12 +60,11 @@ Widget cupertinoDateTimePicker({
         Expanded(
           child: CupertinoDatePicker(
             mode: CupertinoDatePickerMode.dateAndTime,
-            initialDateTime: currentTime,
+            initialDateTime: currentTime ?? now,
             onDateTimeChanged: (val) {
               picked = val;
             },
-            // dateOrder: DatePickerDateOrder.mdy,
-            maximumDate: DateTime.now(),
+            minimumDate: now,
           ),
         ),
       ],

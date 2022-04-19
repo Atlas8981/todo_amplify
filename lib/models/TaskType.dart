@@ -30,7 +30,7 @@ class TaskType {
               )
             : json["updatedAt"],
         name: json["name"],
-        tasks: List<Task>.from(json["Task"].map((x) => Task.fromJson(x))),
+        tasks: List<Task>.from(json["tasks"].map((x) => Task.fromJson(x)) ?? []),
       );
 
   Map<String, dynamic> toJson() => {

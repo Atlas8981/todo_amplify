@@ -1,9 +1,10 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_amplify/components/custom_tab_bar_indicator.dart';
-import 'package:todo_amplify/controllers/task_type_controller.dart';
+import 'package:todo_amplify/components/CustomTabBarIndicator.dart';
+import 'package:todo_amplify/controllers/TaskTypeController.dart';
 import 'package:todo_amplify/models/Task.dart';
 import 'package:todo_amplify/models/TaskType.dart';
 import 'package:todo_amplify/services/TaskService.dart';
@@ -25,10 +26,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-
-  // final taskListController = Get.put(TaskTypeController());
   final taskListController = Get.put(TaskTypeController());
-
+  TabController? tabController;
   final taskService = TaskService();
 
   List<Widget> appBarActions(TabController tabController) {
@@ -177,14 +176,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ...listOfTask.map((e) {
             return TypeOfTaskBottomSheetListItem(
               title: e.name ?? "",
-              isSelected: taskListController.getSelectedTypeOfList() == e,
+              isSelected: listOfTask[tabController?.index ?? 0] == e,
               onTap: () {
                 Get.back();
-                final tabController = taskListController.tabController;
                 if (tabController == null) {
                   return;
                 }
-                tabController.animateTo(listOfTask.indexOf(e));
+                tabController!.animateTo(listOfTask.indexOf(e));
               },
             );
           }).toList(),
@@ -250,6 +248,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -267,9 +267,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       bottomNavigationBar: bottomAppBar(),
       body: GetBuilder<TaskTypeController>(
         builder: (controller) {
-
-          final tabController = taskListController.getTabController(this);
           final tabs = taskListController.getTabs();
+          tabController = TabController(
+            length: tabs.length,
+            vsync: this,
+          );
           final typeOfTask = taskListController.taskTypes;
 
           return DefaultTabController(
@@ -282,7 +284,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     context,
                     innerBoxIsScrolled,
                     tabs,
-                    tabController,
+                    tabController!,
                   ),
                 ];
               },
@@ -299,6 +301,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         },
       ),
     );
+  }
+
+  final db = FirebaseFirestore.instance;
+
+  @override
+  void initState() {
+    super.initState();
+    db
+        .collection(TaskService.taskTypeCollection)
+        .snapshots()
+        .listen((querySnapshot) {
+      final tempList =
+          querySnapshot.docs.map((e) => TaskType.fromJson(e.data())).toList();
+      taskListController.setNewLists(tempList);
+    });
   }
 
   var _count = 0;
